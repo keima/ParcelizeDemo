@@ -2,9 +2,9 @@ package app.keima.android.parcelizedemo
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import java.util.Date
+import java.util.*
 
-class Mp3Tag {
+class Mp3Tag private constructor() {
 
   @Parcelize
   data class Album(

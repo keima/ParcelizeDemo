@@ -6,30 +6,50 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import app.keima.android.parcelizedemo.databinding.ActivityMainBinding
 import com.evernote.android.state.State
-import java.util.Date
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
   companion object {
     private const val TAG = "MainActivity"
+
+    private val songTitlePlaceholders = arrayOf(
+        "lorem", "ipsum", "dolor", "sit amet", "consectetur", "adipiscing elit"
+    )
+    private val songGenrePlaceholders = arrayOf(
+        "Pop", "Metal", "Rock", "EDM", "Jazz"
+    )
   }
 
   private lateinit var binding: ActivityMainBinding
 
-  @State
-  var mp3Tag = Mp3Tag()
+  @State()
+  var album = Mp3Tag.Album()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-    binding.model = mp3Tag
+    binding.model = album
 
     binding.saveButton.setOnClickListener {
-      mp3Tag.date = Date()
-      Log.d(TAG, "*_mp3tag: $mp3Tag")
+      album.date = Date()
+      Log.d(TAG, "album: $album")
     }
 
-    Log.d(TAG, "mp3tag: $mp3Tag")
+    binding.addSongButton.setOnClickListener {
+      album.songs += Mp3Tag.Song(
+          title = songTitlePlaceholders.random(),
+          genre = songGenrePlaceholders.random()
+      )
+      Log.d(TAG, "album: $album")
+    }
+
+    Log.d(TAG, "album: $album")
   }
 
+}
+
+private fun Array<String>.random(): String {
+  val index = Random().nextInt((this.size))
+  return this[index]
 }
